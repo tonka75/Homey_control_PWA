@@ -18,6 +18,7 @@
   <script src="app.js" defer></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Hoppa till innehållet</a>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Huvudmeny">
       <div class="logo-row"><img src="icons/icon-192.png" alt="" class="brand-logo"><div><strong>Homey Control</strong><small>Mitt smarta hem</small></div></div>
@@ -29,11 +30,12 @@
       </nav>
       <div class="sidebar-foot">Homey Pro · Lokal anslutning</div>
     </aside>
-    <main class="content">
+    <main class="content" id="main">
       <header class="topbar">
-        <div class="identity"><span class="eyebrow">DIN KONTROLLPANEL</span><span class="topline">Homey Control <span class="v-tag">v1.0 PWA</span></span></div>
-        <div class="toolbar"><span id="connStatus" class="status-pill offline"><span class="status-dot"></span>Inte ansluten</span><button class="icon-button" id="refresh" aria-label="Uppdatera information" title="Uppdatera">↻</button></div>
+        <div class="identity"><span class="eyebrow">DIN KONTROLLPANEL</span><span class="topline">Homey Control <span class="v-tag">v1.1 PWA</span></span></div>
+        <div class="toolbar"><span id="connStatus" class="status-pill offline" role="status" aria-live="polite"><span class="status-dot"></span>Inte ansluten</span><button class="icon-button" id="refresh" aria-label="Uppdatera information" title="Uppdatera">↻</button></div>
       </header>
+      <div id="installTip" class="install-tip"><span><strong>Ha hemmet nära.</strong> Installera på iPhone eller iPad: öppna i Safari → Dela → Lägg till på hemskärmen.</span><button id="installDismiss" class="icon-button" aria-label="Dölj installationstips">×</button></div>
       <div id="banner" class="banner hidden" role="status"></div>
       <section id="page-overview" class="page active" aria-labelledby="overview-title">
         <div class="hero"><div class="hero-content"><span class="eyebrow">VÄLKOMMEN HEM</span><h1 id="overview-title">Hela ditt hem.<br><span>På ett ställe.</span></h1><p>En snabb överblick över dina favoriter, belysning, sensorer och automatiseringar.</p><button id="heroConnect" class="primary-btn">Anslut din Homey <span>→</span></button></div><div class="hero-orb" aria-hidden="true"><span>⌂</span></div></div>
@@ -51,11 +53,11 @@
       </section>
       <section id="page-flows" class="page" aria-labelledby="flows-title"><div class="page-heading"><div><span class="eyebrow">AUTOMATISERA</span><h1 id="flows-title">Flows & scener</h1><p>Starta dina automatiseringar och ljusscener.</p></div></div><div class="section-heading"><h2>Ljusscener</h2></div><div id="moodList" class="scene-grid"></div><div class="section-heading"><h2>Flows</h2></div><div id="flowList" class="flow-list"></div></section>
       <section id="page-settings" class="page" aria-labelledby="settings-title"><div class="page-heading"><div><span class="eyebrow">ANSLUTNING & SÄKERHET</span><h1 id="settings-title">Inställningar</h1><p>Anslut till din Homey Pro över hemnätverkets Wi-Fi.</p></div></div>
-        <div class="settings-layout"><form id="connectForm" class="settings-card" autocomplete="off"><h2>Homey Pro</h2><p>Du hittar IP-adressen i Homey Web App under Inställningar → Allmänt → Systeminformation.</p><label for="homeyIp">Homeys lokala IP-adress</label><input type="text" inputmode="decimal" id="homeyIp" placeholder="192.168.1.100" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+        <div class="settings-layout"><form id="connectForm" class="settings-card" autocomplete="off"><h2>Anslut ditt hem</h2><p>Du hittar IP-adressen i Homey Web App under Inställningar → Allmänt → Systeminformation.</p><label for="homeyIp">Homeys lokala IP-adress</label><input type="text" inputmode="numeric" id="homeyIp" placeholder="192.168.1.100" autocomplete="off" autocapitalize="off" spellcheck="false" required>
         <label for="homeyKey">API-nyckel</label><div class="keyrow"><input id="homeyKey" type="password" placeholder="Klistra in din Homey API-nyckel" autocapitalize="off" spellcheck="false" required><button class="show-key" id="showKey" type="button" aria-label="Visa eller dölj API-nyckel">Visa</button></div>
         <label class="remember-row"><input id="rememberKey" type="checkbox"><span>Kom ihåg API-nyckeln på den här enheten</span></label><p class="helper-text">Nyckeln skickas enbart direkt till den Homey-adress du anger. Om du väljer att spara nyckeln lagras den i webbläsaren på enheten, inte på någon server. Undvik det på delade enheter.</p>
         <button class="primary-btn wide" type="submit" id="saveConnect">Testa anslutning</button><button type="button" id="disconnect" class="danger-link">Koppla från och radera sparade uppgifter</button></form>
-        <div class="tips-card"><h2>Så här ansluter du</h2><ol><li>Anslut iPhone/iPad till samma Wi-Fi som din Homey Pro.</li><li>Öppna <a href="https://my.homey.app" target="_blank" rel="noreferrer noopener">my.homey.app</a> på din dator.</li><li>Skapa en ny API-nyckel under Inställningar → API Keys med rättigheter att läsa och styra enheter, läsa och starta Flows samt hantera ljusscener.</li><li>Fyll i Homeys IP och nyckeln till vänster. Tryck <strong>Testa anslutning</strong>.</li></ol><div class="info-box"><strong>Viktigt om webbappar</strong><p>Safari kan blockera anrop till Homey av säkerhetsskäl (CORS/åtkomst till lokala nätverk), även när IP och nyckel är rätt. Då behövs en annan anslutningslösning. Appen visar ett felmeddelande i stället för att gissa.</p></div><p id="diag" class="diag">Status: Inte ansluten</p></div></div>
+        <div class="tips-card"><h2>Så här ansluter du</h2><ol><li>Anslut iPhone/iPad till samma Wi-Fi som din Homey Pro.</li><li>Öppna <a href="https://my.homey.app" target="_blank" rel="noreferrer noopener">my.homey.app</a> på din dator.</li><li>Skapa en ny API-nyckel under Inställningar → API Keys med rättigheter att läsa och styra enheter, läsa och starta Flows samt hantera ljusscener.</li><li>Fyll i Homeys IP och nyckeln till vänster. Tryck <strong>Testa anslutning</strong>.</li></ol><div class="info-box"><strong>Viktigt om webbappar</strong><p>Safari kan blockera anrop till Homey av säkerhetsskäl (CORS/åtkomst till lokala nätverk), även när IP och nyckel är rätt. Då behövs en annan anslutningslösning. Appen visar ett felmeddelande i stället för att gissa.</p></div><p id="diag" class="diag">Status: Inte ansluten · v1.1</p></div></div>
       </section>
       <footer>Homey Control • Privat kontrollpanel • Ingen telemetri</footer>
     </main>
