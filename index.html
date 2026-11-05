@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101725">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Homey Control">
+  <meta name="description" content="Din egen kontrollpanel för Homey Pro – anpassad för iPhone och iPad.">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://*.homey.homeylocal.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Homey Control</title>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Huvudmeny">
+      <div class="logo-row"><img src="icons/icon-192.png" alt="" class="brand-logo"><div><strong>Homey Control</strong><small>Mitt smarta hem</small></div></div>
+      <nav class="sidebar-nav">
+        <button class="nav-link selected" data-page="overview"><span class="nav-ico">◫</span> Översikt</button>
+        <button class="nav-link" data-page="devices"><span class="nav-ico">▦</span> Enheter</button>
+        <button class="nav-link" data-page="flows"><span class="nav-ico">↗</span> Flows & scener</button>
+        <button class="nav-link" data-page="settings"><span class="nav-ico">⚙</span> Inställningar</button>
+      </nav>
+      <div class="sidebar-foot">Homey Pro · Lokal anslutning</div>
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <div class="identity"><span class="eyebrow">DIN KONTROLLPANEL</span><span class="topline">Homey Control <span class="v-tag">v1.0 PWA</span></span></div>
+        <div class="toolbar"><span id="connStatus" class="status-pill offline"><span class="status-dot"></span>Inte ansluten</span><button class="icon-button" id="refresh" aria-label="Uppdatera information" title="Uppdatera">↻</button></div>
+      </header>
+      <div id="banner" class="banner hidden" role="status"></div>
+      <section id="page-overview" class="page active" aria-labelledby="overview-title">
+        <div class="hero"><div class="hero-content"><span class="eyebrow">VÄLKOMMEN HEM</span><h1 id="overview-title">Hela ditt hem.<br><span>På ett ställe.</span></h1><p>En snabb överblick över dina favoriter, belysning, sensorer och automatiseringar.</p><button id="heroConnect" class="primary-btn">Anslut din Homey <span>→</span></button></div><div class="hero-orb" aria-hidden="true"><span>⌂</span></div></div>
+        <div class="stats-grid" aria-live="polite"><div class="stat-card"><span class="stat-icon">▦</span><span class="stat-label">Enheter</span><strong id="statDevices">–</strong></div><div class="stat-card"><span class="stat-icon">☀</span><span class="stat-label">Lampor tända</span><strong id="statLights">–</strong></div><div class="stat-card"><span class="stat-icon">⌁</span><span class="stat-label">Flows</span><strong id="statFlows">–</strong></div><div class="stat-card"><span class="stat-icon">◷</span><span class="stat-label">Senaste uppdatering</span><strong id="statUpdated" class="small-stat">–</strong></div></div>
+        <div class="section-heading"><div><span class="eyebrow">SNABBÅTKOMST</span><h2>Favoriter</h2></div><button class="ghost-btn" data-goto="devices">Alla enheter →</button></div>
+        <div id="favoriteList" class="device-grid"></div>
+        <div class="section-heading"><div><span class="eyebrow">EN TRYCKNING BORT</span><h2>Ljusscener</h2></div><button class="ghost-btn" data-goto="flows">Visa alla →</button></div>
+        <div id="moodQuickList" class="scene-grid"></div>
+      </section>
+      <section id="page-devices" class="page" aria-labelledby="devices-title">
+        <div class="page-heading"><div><span class="eyebrow">STYR DITT HEM</span><h1 id="devices-title">Enheter</h1><p>Styr belysning och se sensorer, sorterat efter rum.</p></div></div>
+        <div class="filter-bar"><label class="search-wrap"><span>⌕</span><input id="searchDevices" type="search" placeholder="Sök efter enhet…" aria-label="Sök efter enhet" autocomplete="off"></label><select id="zoneFilter" aria-label="Filtrera efter rum"><option value="all">Alla rum</option></select></div>
+        <div class="chip-bar" id="typeChips"><button class="chip active" data-type="all">Alla</button><button class="chip" data-type="light">Belysning</button><button class="chip" data-type="socket">Uttag</button><button class="chip" data-type="sensor">Sensorer</button><button class="chip" data-type="other">Övrigt</button></div>
+        <div id="deviceList" class="device-grid"></div>
+      </section>
+      <section id="page-flows" class="page" aria-labelledby="flows-title"><div class="page-heading"><div><span class="eyebrow">AUTOMATISERA</span><h1 id="flows-title">Flows & scener</h1><p>Starta dina automatiseringar och ljusscener.</p></div></div><div class="section-heading"><h2>Ljusscener</h2></div><div id="moodList" class="scene-grid"></div><div class="section-heading"><h2>Flows</h2></div><div id="flowList" class="flow-list"></div></section>
+      <section id="page-settings" class="page" aria-labelledby="settings-title"><div class="page-heading"><div><span class="eyebrow">ANSLUTNING & SÄKERHET</span><h1 id="settings-title">Inställningar</h1><p>Anslut till din Homey Pro över hemnätverkets Wi-Fi.</p></div></div>
+        <div class="settings-layout"><form id="connectForm" class="settings-card" autocomplete="off"><h2>Homey Pro</h2><p>Du hittar IP-adressen i Homey Web App under Inställningar → Allmänt → Systeminformation.</p><label for="homeyIp">Homeys lokala IP-adress</label><input type="text" inputmode="decimal" id="homeyIp" placeholder="192.168.1.100" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+        <label for="homeyKey">API-nyckel</label><div class="keyrow"><input id="homeyKey" type="password" placeholder="Klistra in din Homey API-nyckel" autocapitalize="off" spellcheck="false" required><button class="show-key" id="showKey" type="button" aria-label="Visa eller dölj API-nyckel">Visa</button></div>
+        <label class="remember-row"><input id="rememberKey" type="checkbox"><span>Kom ihåg API-nyckeln på den här enheten</span></label><p class="helper-text">Nyckeln skickas enbart direkt till den Homey-adress du anger. Om du väljer att spara nyckeln lagras den i webbläsaren på enheten, inte på någon server. Undvik det på delade enheter.</p>
+        <button class="primary-btn wide" type="submit" id="saveConnect">Testa anslutning</button><button type="button" id="disconnect" class="danger-link">Koppla från och radera sparade uppgifter</button></form>
+        <div class="tips-card"><h2>Så här ansluter du</h2><ol><li>Anslut iPhone/iPad till samma Wi-Fi som din Homey Pro.</li><li>Öppna <a href="https://my.homey.app" target="_blank" rel="noreferrer noopener">my.homey.app</a> på din dator.</li><li>Skapa en ny API-nyckel under Inställningar → API Keys med rättigheter att läsa och styra enheter, läsa och starta Flows samt hantera ljusscener.</li><li>Fyll i Homeys IP och nyckeln till vänster. Tryck <strong>Testa anslutning</strong>.</li></ol><div class="info-box"><strong>Viktigt om webbappar</strong><p>Safari kan blockera anrop till Homey av säkerhetsskäl (CORS/åtkomst till lokala nätverk), även när IP och nyckel är rätt. Då behövs en annan anslutningslösning. Appen visar ett felmeddelande i stället för att gissa.</p></div><p id="diag" class="diag">Status: Inte ansluten</p></div></div>
+      </section>
+      <footer>Homey Control • Privat kontrollpanel • Ingen telemetri</footer>
+    </main>
+    <nav class="bottom-nav" aria-label="Huvudmeny mobil"><button class="bottom-link selected" data-page="overview"><span>◫</span>Översikt</button><button class="bottom-link" data-page="devices"><span>▦</span>Enheter</button><button class="bottom-link" data-page="flows"><span>↗</span>Flows</button><button class="bottom-link" data-page="settings"><span>⚙</span>Inställningar</button></nav>
+  </div>
+  <dialog id="confirmDialog"><div class="dialog-body"><div class="dialog-symbol">↗</div><h2 id="dialogTitle">Starta Flow?</h2><p id="dialogText"></p><div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelAction">Avbryt</button><button type="button" class="primary-btn" id="confirmAction">Starta</button></div></div></dialog>
+  <div id="toast" role="status" aria-live="polite" class="toast hidden"></div>
+</body>
+</html>
