@@ -19,8 +19,6 @@ Projekt: [tonka75/Homey_control_PWA](https://github.com/tonka75/Homey_control_PW
 3. Öppna [Homey Control](https://tonka75.github.io/Homey_control_PWA/) när körningen är grön.
 4. På iPhone/iPad: öppna adressen i Safari → Dela → Lägg till på hemskärmen. Beroende på iOS-version kan alternativet **Öppna som webbapp** visas.
 
-**Status den 5 november 2026:** projektet är privat. GitHub avvisade aktivering av Pages med beskedet att den nuvarande planen inte stöder Pages för detta projekt. Publicering kräver därför antingen en GitHub-plan som stöder privata Pages-projekt eller att ägaren uttryckligen väljer att göra projektet offentligt. Webbplatsadressen ovan är avsedd publiceringsadress, inte en bekräftat publicerad app. Arbetsflödet testar koden men hoppar över själva publiceringen tills Pages har aktiverats.
-
 Alla resurser använder relativa adresser så att appen fungerar i `/Homey_control_PWA/`.
 
 ### Verifiering
